@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>vue 3</title>
+</head>
+<body>
+    
+    <div id="app">
+        <!-- 雙括弧是模板語言 -->
+        <h1>{{count}}</h1>
+        <hr>
+        <div>{{name}}</div>
+        <!-- boolean?1:0 -->
+        <div>{{talk ? '呼呼':'拉拉'}}</div>
+        <!-- array.lenghth -->
+        <div>{{array}}</div>
+        <div>{{array.length}}</div>
+        <div>{{obj}}</div>
+    </div>
+    <script src="https://unpkg.com/vue@next"></script>
+    <script>
+        // console.log(Vue)  //可以看到Vue的方法
+        //新增一個應用 application → 建立 Vue 實體 (instance)，
+        Vue.createApp({
+            data(){
+                return {
+                    count:2, //number
+                    name:'❤❤❤😍😎', //string
+                    talk:true, //boolean
+                    array:[1,2,3], //array
+                    obj:{test:'123123'} //object
+                }
+            }
+        }).mount('#app') //並掛載 (mount) 在網頁結點上 (id="app")
+    </script>
+</body>
+</html>

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>vue 2</title>
+</head>
+<body>
+    
+    <div id="app">
+        {{count}}
+        <hr>
+        <div>{{name}}</div>
+        <div>{{talk}}</div>
+        <div>{{array}}</div>
+        <div>{{obj}}</div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script>
+        // 寫法一
+        // new Vue({
+        //     data:{
+        //         count:1
+        //     }
+        //     el: '#app'
+        // })
+
+        // 寫法二
+        const App = new Vue({
+            data:{
+                count:1
+            }
+            // el: '#app'
+        })
+        App.$mount('#app')
+    </script>
+
+
+
+
+    <!-- <script src="https://unpkg.com/vue@next"></script>
+    <script>
+        // console.log(Vue)  //可以看到Vue的方法
+        Vue.createApp({
+            data(){
+                return {
+                    count:2, //
+                    name:'❤❤❤😍😎',
+                    talk:true,
+                    array:[123],
+                    obj:{test:'123123'}
+
+                }
+            }
+        }).mount('#app')
+    </script> -->
+</body>
+</html>
