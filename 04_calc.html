@@ -5,27 +5,32 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>計算機</title>
+
 </head>
 <body>
     <div id="app">
         <button 
             v-for="num in 9"
             :key="num"
-            @click="keyin = num"
+            @click="btnp"
         >
             {{num}}
         </button>
-        <button @click="keyin = 0">
-            0
-        </button>
-        {{keyin}}
+
+        <button @click="btnp">0</button>
+        <button @click="btnp">.</button>
+
+        <div>keyin:{{keyin}}</div>
         <br>
+        
+        <button @click="divide">/</button>
+        <button @click="multiplied">*</button>
         <button @click="reduceCount">-</button>
         <button @click="addCount">+</button>
         <button @click="calc">=</button>
         <button @click="clear">c</button>
         <div>
-            step:{{stap}}
+            step:{{step}}
         </div>
     </div>
     <script src="https://unpkg.com/vue@next"></script>
@@ -33,12 +38,16 @@
         Vue.createApp({
             data(){
                 return {
-                    step:''
-                    result:0
+                    step:'',
+                    result:0,
+                    keyin:'' 
                 }
             },
             methods:{
-                add(){
+                btnp(){
+                    this.keyin += this
+                },
+                addCount(){
                     this.result += this.keyin
                 }
 
