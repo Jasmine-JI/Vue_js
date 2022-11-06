@@ -4,22 +4,60 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Vue.js</title>
     <style>
-        a{
-            display: block;
+        body{
+            max-width: 1200px;
+            display: flex;
+            justify-content: center;
+            margin: 15px auto;
         }
+        .wrapper{
+            width: fit-content;
+        }
+        p,a{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        p{
+            color:rgb(119, 158, 158);
+            font-size: 28px;
+        }
+        a{
+            width: 180px;
+            height: 20px;
+            margin: 15px;
+            padding: 15px;
+            border-radius: 100px;
+            text-decoration: none;
+            background-color:rgb(119, 158, 158);
+            color: #fff;
+            font-size: 20px;
+        }
+        a:hover{
+            box-shadow: 2px 2px 2px rgb(61, 79, 79);
+        }
+        span{
+            color:yellow
+        }
+        
+
     </style>
 </head>
 <body>
-    <a href="00vue2.html">00_vue2</a>
-    <a href="01vue3.html">01_vue3</a>
-    <a href="02_v-model.html">02_v-model</a>
-    <a href="03_v-for.html">03_v-for</a>
-    <a href="04_calc.html">04_calc (11/6更新~)</a>
-    <a href="05_products.html">05_products</a>
-    <a href="06_register.html">06_register</a>
-
-
+    <div class="wrapper">
+        <p>10/29</p>
+        <a href="00vue2.html">00_vue2</a>
+        <a href="01vue3.html">01_vue3</a>
+        <a href="02_v-model.html">02_v-model</a>
+        <a href="03_v-for.html">03_v-for</a>
+        <a href="04_calc.html">04_calc<span> -11/6更新- </span> </a>
+    </div>
+    <div class="wrapper">
+        <p>11/5</p>
+        <a href="05_products.html">05_products</a>
+        <a href="06_register.html">06_register</a>
+    </div>
 </body>
 </html>
