@@ -1,0 +1,157 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>1</title>
+</head>
+<body>
+    <div id="app">
+        <header>
+            search: <input type="text" v-model="search"><br>
+            篩選出大於: <input type="number" v-model="min">-<input type="number" v-model="max">$的商品
+        </header>
+        <div v-if="load">load</div>
+        <div v-else class="productContainer">
+            <p>總計：{{total}}元</p> 
+            <div v-for="(item, index) in product" :key="item.id">
+                <p>{{item.title}}</p>
+                <img :src="item.image" v-bind:alt="item.title">
+                <p>{{item.price}}元</p>
+                <div>
+                    <button v-on:click="reduceCount(index)">-</button>
+                    <input type="number" min="0" v-model="count[index]">
+                    <button @click="addCount(index, 1)">+</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://unpkg.com/vue@next"></script>
+    <script>
+        Vue.createApp({
+            data(){
+                return {
+                    load:false,
+                    source:[],
+                    // product: [],
+                    count: [],
+                    // total: 0,
+                    search:'',
+                    min:0,
+                    max:0
+                }
+            },
+            computed:{ //可電腦計算的data ，不能帶參數
+                product(){
+                    // filter
+                    // 只有min的寫法
+                    // if(this.min>0){
+                    //     return this.source.filter(item=>{
+                    //         return item.price>this.min
+                    //     })
+
+                    //     //簡寫
+                    //     // return this.source.filter(item=> item.price >this.min
+                    //     // )
+                    // }else{
+                    //     return this.source
+                    // }
+                    
+                    let cache = this.source
+                    if(this.min > 0){ //篩選最小價錢
+                        cache = cache.filter(item=>{
+                            return item.price > this.min
+                        })
+                    }
+
+                    if(this.max > 0){
+                        cache = cache.filter(item=>{
+                            return item.price < this.max
+                        })
+                    }
+
+                    // search
+                    // if(this.search !== ''){
+                        //     console.log(this.search);
+                        // }
+                        // return this.source
+                    if(this.search !== ''){
+                        cache = cache.filter(item=>{
+                            return item.title.includes(this.search)
+                        })
+                    }
+                    return cache
+
+                        // 練習
+                        // [1,2,3].filter(num => num>2)// [3]
+                        // ['aaa','abc','bbc'].filter(str => str.includes('a'))//(2) ['aaa', 'abc']
+                        // ['aaa','abc','bbc'].find(str => str.includes('a'))//'aaa'
+                },
+                total(){
+                    if(this.product.length> 0){
+						let total = 0
+						for ( const countIndex in this.product) {
+							total += this.count[countIndex] * this.product[countIndex]['price']
+						}
+						return parseInt(total )
+					}else{
+						return 0
+					}
+                }
+            },
+            watch:{
+                //監聽data或computed
+				total: {
+					handler: function(newVal, oldVal) {
+						console.log(oldVal);
+						console.log(newVal);
+                        if(newVal>1000){
+                            alert('你要餓死了哈哈')
+                        }
+					},
+					deep: true
+				}
+            },
+            mounted() { // mounted : 渲染完
+            },
+            methods:{// 可帶參數
+                getResource(){
+                    this.load = true
+                    fetch('https://fakestoreapi.com/products/')
+                    .then(res=>res.json())
+                    .then(json=>{
+                        this.source = json
+                        //初始化商品數量
+                        for ( item in this.product) {
+                            this.count.push(0)
+                        }
+                        this.load = false
+                    })
+                },
+                addCount(index){
+                    this.count[index] += 1
+                    // this.sumTotal()
+                },
+                reduceCount(index){
+                    if(this.count[index] <= 0) return
+                    this.count[index] -= 1
+                    // this.sumTotal()
+                },
+            },
+            created(){  // created : Vue實體被建立完
+                this.getResource()
+            }
+        }).mount("#app")
+    </script>
+</body>
+</html>
+<style>
+    .productContainer{
+        display: inline-flex;
+    }
+    img{
+        height: 5rem;
+    }
+</style>
