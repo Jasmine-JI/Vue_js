@@ -10,8 +10,16 @@
 <body>
     <div id="app">
         <header>
-            <label for="party">選擇日期:</label>
-            <input type="datetime-local"/><br>
+            <div class="date">
+                <div class="checkin">
+                    <label for="hotel">入住日期:</label>
+                    <input type="date"/><br>
+                </div>
+                <div class="checkout">
+                    <label for="hitel">退房日期:</label>
+                    <input type="date"/><br>
+                </div>
+            </div>
             搜尋飯店: <input type="text" v-model="search"><br>
             篩選出價格介於: <input type="number" v-model="min">-<input type="number" v-model="max">$的飯店
         </header>
@@ -128,17 +136,21 @@
 </html>
 <style>
     .hotelContainer{
-        display: inline-flex;
-        max-width: 1200px;
+        display: flex;
         flex-wrap: wrap;
+        max-width: 1200px;
         margin: auto;
-
+    }
+    .date{
+        display: flex;
+        justify-content:space-between;
+        width: 400px;
     }
     .hotel{
-        width: 300px;
+        margin: 10px;
     }
     img{
-        width: 100px;
-        height: 100px;
+        width: 380px;
+        height: 200px;
     }
 </style>
