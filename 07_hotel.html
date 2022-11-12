@@ -5,25 +5,27 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>products</title>
+    <title>hotels</title>
 </head>
 <body>
     <div id="app">
         <header>
-            search: <input type="text" v-model="search"><br>
-            篩選出大於: <input type="number" v-model="min">-<input type="number" v-model="max">$的商品
+            <label for="party">選擇日期:</label>
+            <input type="datetime-local"/><br>
+            搜尋飯店: <input type="text" v-model="search"><br>
+            篩選出價格介於: <input type="number" v-model="min">-<input type="number" v-model="max">$的飯店
         </header>
         <div v-if="load">load</div>
-        <div v-else class="productContainer">
-            <p>總計：{{total}}元</p> 
-            <div v-for="(item, index) in product" :key="item.id">
-                <p>{{item.title}}</p>
-                <img :src="item.image" v-bind:alt="item.title">
-                <p>{{item.price}}元</p>
-                <div>
-                    <button v-on:click="reduceCount(index)">-</button>
-                    <input type="number" min="0" v-model="count[index]">
-                    <button @click="addCount(index, 1)">+</button>
+        <div v-else class="hotelContainer">
+            <div v-for="(item, index) in hotel" :key="item.id">
+                <div class="hotel">                    
+                    <img src="https://picsum.photos/300/200/?random=10" v-bind:alt="item.name">
+                    <p>飯店名稱: {{item.name}}</p>
+                    <span>{{item.stars}}星級</span>
+                    <p>{{item.price}}元</p>
+                    <p>date_start:{{item.date_start}}</p>
+                    <p>date_end:{{item.date_end}}</p>
+
                 </div>
             </div>
         </div>
@@ -35,7 +37,7 @@
                 return {
                     load:false,
                     source:[],
-                    // product: [],
+                    // hotel: [],
                     count: [],
                     // total: 0,
                     search:'',
@@ -44,21 +46,7 @@
                 }
             },
             computed:{ //可電腦計算的data ，不能帶參數，有傳回值
-                product(){
-                    // filter
-                    // 只有min的寫法
-                    // if(this.min>0){
-                    //     return this.source.filter(item=>{
-                    //         return item.price>this.min
-                    //     })
-
-                    //     //簡寫
-                    //     // return this.source.filter(item=> item.price >this.min
-                    //     // )
-                    // }else{
-                    //     return this.source
-                    // }
-                    
+                hotel(){        
                     let cache = this.source
                     if(this.min > 0){ //篩選最小價錢
                         cache = cache.filter(item=>{
@@ -72,28 +60,19 @@
                         })
                     }
 
-                    // search
-                    // if(this.search !== ''){
-                        //     console.log(this.search);
-                        // }
-                        // return this.source
                     if(this.search !== ''){
                         cache = cache.filter(item=>{
-                            return item.title.includes(this.search)
+                            return item.name.includes(this.search)
                         })
                     }
                     return cache
 
-                        // 練習
-                        // [1,2,3].filter(num => num>2)// [3]
-                        // ['aaa','abc','bbc'].filter(str => str.includes('a'))//(2) ['aaa', 'abc']
-                        // ['aaa','abc','bbc'].find(str => str.includes('a'))//'aaa'
                 },
                 total(){
-                    if(this.product.length> 0){
+                    if(this.hotel.length> 0){
 						let total = 0
-						for ( const countIndex in this.product) {
-							total += this.count[countIndex] * this.product[countIndex]['price']
+						for ( const countIndex in this.hotel) {
+							total += this.count[countIndex] * this.hotel[countIndex]['price']
 						}
 						return parseInt(total)
 					}else{
@@ -119,12 +98,12 @@
             methods:{// 可帶參數
                 getResource(){
                     this.load = true
-                    fetch('https://fakestoreapi.com/products/')
+                    fetch('http://fake-hotel-api.herokuapp.com/api/hotels')
                     .then(res=>res.json())
                     .then(json=>{
                         this.source = json
                         //初始化商品數量
-                        for ( item in this.product) {
+                        for ( item in this.hotel) {
                             this.count.push(0)
                         }
                         this.load = false
@@ -148,10 +127,18 @@
 </body>
 </html>
 <style>
-    .productContainer{
+    .hotelContainer{
         display: inline-flex;
+        max-width: 1200px;
+        flex-wrap: wrap;
+        margin: auto;
+
+    }
+    .hotel{
+        width: 300px;
     }
     img{
-        height: 5rem;
+        width: 100px;
+        height: 100px;
     }
 </style>
