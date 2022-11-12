@@ -5,205 +5,75 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>生命週期</title>
+    <title>1</title>
 </head>
 <body>
-    <div id="app" class="wrapper">
-        <main>
-            <header>
-                search: <input type="text" v-model="search"><br>
-                $<input type="number" v-model="min">-<input type="number" v-model="max">
-            </header>
-            <template v-if="load">loading...</template>
-            <template v-else >
-                <div class="productContainer">
-                    <div v-for="(item, index) in product" :key="item.id">
-                        <p>{{item.title}}</p>
-                        {{parseRating(item.rating)}}
-                        <img :src="item.image" v-bind:alt="item.title">
-                        <p>{{parsePrice(item.price)}}元</p>
-                        <div>
-                            <button v-on:click="reduceCount(index, item)">-</button>
-                            <input type="number" min="0" v-model="count[index]">
-                            <button @click="addCount(index, item)">+</button>
-                        </div>
-                    </div>
-                </div>
-            </template>
-        </main>
-        <aside>
-            訂單
-            <ul>
-                <li v-for="item in order" :key="item.id">
-                    ID{{item.id}}: {{item.count}}
-                </li>
-            </ul>
-            <p>總價：{{total}}元</p> 
-        </aside>
+    <div id="app">
+        <section id="section1" ref="section1">
+            1
+            <button @click="scrollDown">👇</button>
+        </section>
+        <section id="section2" ref="section2">
+            2
+        </section>
+        <section id="section3" ref="section3">
+            3
+            <button @click="scrollTo">👆</button>
+        </section>
     </div>
     <script src="https://unpkg.com/vue@next"></script>
     <script>
         Vue.createApp({
             data(){
-                return {
-                    load: false,
-					source: [],
-                    sourceCount: 0,
-                    order: [],
-                    // product: [],
-                    count: [],
-					search: '',
-					min: 0,
-					max: 0,
-                }
+                return {}
             },
-			computed:{
-				product(){
-					let cache = this.source
-					if(this.min > 0){//篩選最小價錢
-						cache = cache.filter((item, index)=>{
-							return item.price > this.min
-						})
-					}
-					if(this.max > 0){//篩選最大價錢
-						cache = cache.filter(item=>{
-							return item.price < this.max
-						})
-					}
-					if(this.search !== ''){//篩選相符標題
-						cache = cache.filter(item=>{
-							return item.title.includes(this.search)
-						})
-					}
-					return cache
-				},
-				total(){
-					let total = 0
-					for ( const countIndex in this.product) {
-						total += this.count[countIndex] * this.product[countIndex]['price']
-					}
-					return parseInt(total)
-				}
-			},
-			watch:{
-				//監聽data或computed
-				total: {
-					handler: function(newVal, oldVal) {
-						if(newVal> 1000){
-							alert('你要餓死了')
-						}
-					}
-				}
-			},
-            methods:{
-                parseRating(rating){
-                    if(!rating) return null
-                    let starStr = ''
-                    const star = parseInt(rating.rate)
-                    for (let index = 0; index < star; index++) {
-                        starStr += '🌟'
-                    }
-                    return `${starStr}${rating.count}`
-                },
-				parsePrice(price){
-					return `TWD ${price*33}`
-				},
-                getResource(){
-                    this.load = true
-                    fetch('https://fakestoreapi.com/products/')
-                    .then(res=>res.json())
-                    .then(json=>{
-                        this.source = json
-                        //初始化商品數量
-                        for ( item in this.product) {
-                            this.count.push(0)
-                        }
-                        this.load = false
-                        this.sourceCount = this.source.length
-                        // console.log('method:'+this.sourceCount);
+            methods: {
+                scrollTo(){
+                    window.scrollTo({
+                        top: 0,
+                        behavior: "smooth"
                     })
                 },
-                addCount(index, item){
-                    this.count[index] += 1
-                    const proIndex = this.order.findIndex(orderItem => orderItem.id === item.id)
-                    // const exits = this.order.some(orderItem => orderItem.id === item.id)
-                    // console.log(exits);
-                    if(proIndex && proIndex >= 0){
-                        //將訂單商品數量 + 1
-                        this.order[proIndex]['count'] += 1
-                    }else{
-                        // proIndex = -1
-                        this.order.push({
-                            id: item.id,
-                            title: item.title,
-                            price: item.price,
-                            count: 1 //初始化
-                        })
-                    }
-                    this.setStorage()
-                },
-                reduceCount(index, item){
-                    // console.log(item);
-                    if(this.count[index] <= 0) return
-                    this.count[index] -= 1
-                    const proIndex = this.order.findIndex(orderItem => orderItem.id === item.id)
-
-                    if(proIndex < 0) return
-                    if(this.order[proIndex]['count'] > 1){
-                        this.order[proIndex]['count'] -= 1
-                    }else{
-                        this.order.splice(proIndex, 1)
-                    }
-                    this.setStorage()
-                },
-                getStorage(){
-                    let data = localStorage.getItem('chuncun')
-                    data = JSON.parse(data)
-                    this.order = data? data:[]
-                },
-                setStorage(){
-                    //陣列或物件轉字串
-                    const data = JSON.stringify(this.order)
-                    localStorage.setItem('chuncun',data)
+                scrollDown(){
+                    // const box = document.getElementById('section2')
+                    // console.log(this.$refs);
+                    const box = this.$refs.section2
+                    // // console.log(box.getBoundingClientRect());
+                    window.scrollTo({
+                        top: box.offsetTop,
+                        behavior: "smooth"
+                    })
                 }
             },
-			created() {
-                // console.log('created:'+this.source.length);
-                // this.getResource()
-            },
-            mounted(){
-                this.getResource()
-                this.getStorage()
-                this.sourceCount = this.source.length
-                // console.log('mounted:'+this.sourceCount);
-            },
-            beforeUnmount(){
-                // alert('beforeUnmount')
-                // console.log('beforeUnmount');
-            }
         }).mount("#app")
     </script>
 </body>
 </html>
 <style>
-    .wrapper{
-        width: 100%;
-        height: 80vh;
+    section{
+        position: relative;
+        height: 100vh;
+        font-size: 50vh;
     }
-    main{
-        display: inline-block;
-        width: calc(100vw - 21rem);
-        overflow: scroll;
+    button{
+        position: absolute;
+        bottom: 3rem;
+        left: 50%;
+        width: 3rem;
+        height: 3rem;
+        font-size: 3rem;
+        background-color: transparent;
+        outline: none;
+        border: none;
     }
-    aside{
-        display: inline-block;
-        width: 20rem;
-        vertical-align: top;
+    #section1{
+        background-color: #222;
     }
-    .productContainer{
-        display: inline-flex;
+    #section2{
+        background-color: #555;
     }
-    img{
-        height: 5rem;
+    #section3{
+        background-color: #999;
     }
+
 </style>
