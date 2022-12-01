@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>vue 3</title>
+    <link rel="stylesheet" href="https://unpkg.com/view-ui-plus/dist/styles/viewuiplus.css">
+
+</head>
+<body>
+    <div id="app">
+        <i-button @click="show">Click me!</i-button>
+        <Space size="large">
+            <Badge dot>
+                <a href="#" class="demo-badge"></a>
+            </Badge>
+            <Badge dot>
+                <Icon type="ios-notifications-outline" size="26"></Icon>
+            </Badge>
+            <Badge dot>
+                <a href="#">可以是一个链接</a>
+            </Badge>
+        </Space>
+        <Page :modelValue="2" :total="50" simple />
+
+        <Carousel autoplay v-model="value" loop>
+            <CarouselItem>
+                <div class="demo-carousel">1</div>
+            </CarouselItem>
+            <CarouselItem>
+                <div class="demo-carousel">2</div>
+            </CarouselItem>
+            <CarouselItem>
+                <div class="demo-carousel">3</div>
+            </CarouselItem>
+            <CarouselItem>
+                <div class="demo-carousel">4</div>
+            </CarouselItem>
+        </Carousel>
+        <script>
+            export default {
+                
+            }
+        </script>
+        
+
+    </div>
+    <script src="https://unpkg.com/vue@next"></script>
+    <script src="https://unpkg.com/view-ui-plus"></script>
+    <script type="text/javascript" src="https://unpkg.com/vue@next"></script>
+    <script type="text/javascript" src="https://unpkg.com/view-ui-plus"></script>
+    <script>
+        const app = Vue.createApp({
+            data(){
+                return {
+
+            }
+            
+            },
+            methods:{
+                show () {
+                this.visible = true;
+                }
+                
+            }
+
+        })
+        app.use(ViewUIPlus);
+        app.mount("#app");
+    </script>
+</body>
+</html>
